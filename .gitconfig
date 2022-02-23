@@ -1,12 +1,12 @@
 [user]
 	name = James Stephens
-	email = stephensja7@gmail.com
+	email = james.stephens@oforce.com
 [credential]
 	helper = osxkeychain
 [core]
 	editor = code --wait
 	autocrlf = false
-	excludesfile = /Users/jstoobz/.gitignore
+	excludesfile = /Users/jamesstephens/.gitignore
 	eol = lf
 [init]
 	defaultBranch = main
