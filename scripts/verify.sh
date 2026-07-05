@@ -43,6 +43,7 @@ padding
 info "Checking symlinks"
 
 # Keep in sync with scripts/03-dotfiles.sh, 04-git.sh, 06-mise.sh, 08-guardrails.sh.
+check_symlink "${DOTFILES_ROOT}/config/zsh/.zshenv" "${HOME}/.zshenv"
 check_symlink "${DOTFILES_ROOT}/config/zsh/.zshrc" "${HOME}/.zshrc"
 check_symlink "${DOTFILES_ROOT}/config/zsh/aliases.zsh" "${HOME}/.config/zsh/aliases.zsh"
 check_symlink "${DOTFILES_ROOT}/config/zsh/functions.zsh" "${HOME}/.config/zsh/functions.zsh"

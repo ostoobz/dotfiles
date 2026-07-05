@@ -17,6 +17,7 @@ link_dotfiles() {
   mkdir -p "${HOME}/.config/mise"
 
   # Symlink configs
+  symlink "${DOTFILES_ROOT}/config/zsh/.zshenv" "${HOME}/.zshenv"
   symlink "${DOTFILES_ROOT}/config/zsh/.zshrc" "${HOME}/.zshrc"
   symlink "${DOTFILES_ROOT}/config/zsh/aliases.zsh" "${HOME}/.config/zsh/aliases.zsh"
   symlink "${DOTFILES_ROOT}/config/zsh/functions.zsh" "${HOME}/.config/zsh/functions.zsh"
