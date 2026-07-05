@@ -19,6 +19,7 @@ brew "unar"
 brew "grep"
 brew "rsync"
 brew "cmake"
+brew "lychee"       # link checker (tend's links check wraps it)
 
 # ============================================================================
 # Modern CLI Replacements
