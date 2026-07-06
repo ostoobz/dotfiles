@@ -10,13 +10,15 @@
 # Environment Variables
 # ============================================================================
 
-export EDITOR="code -w"
-export VISUAL="code -w"
+export EDITOR="codium -w"
+export VISUAL="codium -w"
 export PAGER="less"
-export LANG="en_US.UTF-8"
-export LC_ALL="en_US.UTF-8"
 
-# XDG Base Directories live in .zshenv (environment contracts, every invocation)
+# XDG Base Directories + locale (LANG/LC_ALL) live in .zshenv (environment
+# contracts, every invocation). EDITOR/VISUAL stay here — every consumer in
+# this repo (aliases.zsh, functions.zsh) is an interactive editing action, and
+# DOTFILES stays here too — nothing outside this file reads it as a contract
+# (bootstrap.sh sets its own local copy before .zshrc ever loads).
 
 # Dotfiles location
 export DOTFILES="${HOME}/.dotfiles"
