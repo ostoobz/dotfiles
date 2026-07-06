@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# ============================================================================
+# Idle-time asciiquarium "screensaver" — polled by a LaunchAgent, not a real
+# .saver plugin. Apple's legacy ScreenSaverEngine has been broken across
+# Sonoma/Sequoia/Tahoe (regressed every release, never fixed) and a true
+# lock-screen replacement is architecturally impossible (WindowServer blocks
+# third-party UI above the lock screen) — so this only covers the idle-
+# before-lock window, launching a fullscreen terminal instead of a kernel-
+# level screensaver module. Pair with security.sh's askForPassword-immediately
+# setting so idle -> asciiquarium -> (real) lock reads as one experience.
+#
+# Not compiled (no Swift/ObjC ESF event listener) on purpose — a poll every
+# ${LAUNCHAGENT_INTERVAL}s via HIDIdleTime is coarser than a distributed-
+# notification listener but needs no new build toolchain in a bash-only repo.
+# ============================================================================
+
+set -euo pipefail
+
+GHOSTTY="/Applications/Ghostty.app"
+MARKER_TITLE="asciiquarium-idle-watcher"
+
+idle_threshold() {
+  # Factory default: key absent (System Settings' "Start after" combo picks
+  # its own default, commonly 20min/1200s). Read live so the watcher always
+  # tracks whatever's configured in System Settings > Screen Saver.
+  defaults -currentHost read com.apple.screensaver idleTime 2>/dev/null || echo 300
+}
+
+idle_seconds() {
+  ioreg -c IOHIDSystem -d 4 | awk -F'= ' '/HIDIdleTime/ {print int($2 / 1000000000); exit}'
+}
+
+is_running() {
+  pgrep -f "asciiquarium" >/dev/null 2>&1
+}
+
+main() {
+  local threshold now
+  threshold="$(idle_threshold)"
+  now="$(idle_seconds)"
+
+  if [ "$now" -ge "$threshold" ]; then
+    if ! is_running; then
+      # -na: new instance, don't activate/steal focus away from an already-
+      # idle session. Title lets a human recognize the window; termination
+      # relies on the `-e` command exiting (see below), not window-targeting.
+      open -na "$GHOSTTY" --args --title="$MARKER_TITLE" --fullscreen=true -e asciiquarium
+    fi
+  else
+    # Kill the asciiquarium process, not Ghostty itself — Ghostty closes a
+    # `-e`-invoked window when its command exits, so this alone closes just
+    # the idle-watcher window without touching the user's real terminals.
+    pkill -f "asciiquarium" 2>/dev/null || true
+  fi
+}
+
+main

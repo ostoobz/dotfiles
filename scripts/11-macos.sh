@@ -2,10 +2,15 @@
 # ============================================================================
 # Step 11: macOS hardening
 #
-# Dispatches to three sub-scripts under scripts/macos/:
+# Dispatches to four sub-scripts under scripts/macos/:
 #   defaults.sh   — UI/UX, input, Finder, Dock, crash reporter
 #   finder.sh     — PlistBuddy view settings (requires cfprefsd restart)
 #   security.sh   — firewall, privacy, Siri/ads/diagnostics opt-outs
+#   lean.sh       — resource/decluttering concern: bundled-app removal,
+#                   Spotlight/Bonjour data-sharing, idle-asset daemon, and
+#                   the asciiquarium idle-watcher. Separate from security.sh
+#                   on purpose — "lean provisioning" and "security hardening"
+#                   are different concerns even where the mechanism overlaps.
 #
 # Requires sudo. The install runner prompts when `--only macos` or a full
 # install is invoked (see SUDO_STEPS gate).
@@ -34,6 +39,7 @@ run() {
 run "${MACOS_DIR}/defaults.sh"
 run "${MACOS_DIR}/finder.sh"
 run "${MACOS_DIR}/security.sh"
+run "${MACOS_DIR}/lean.sh"
 
 # Sentinel for `./install --verify` to detect "step 11 never ran on this box".
 mkdir -p "$STATE_DIR"
