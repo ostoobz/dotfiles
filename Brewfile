@@ -92,6 +92,9 @@ brew "neovim"
 brew "tmux"
 brew "mise"         # version manager (no shims)
 brew "mas"          # Mac App Store CLI
+brew "powershell"   # cross-platform pwsh, paired with windows-provisioning/windows-batch-scripting skills
+brew "awscli"       # paired with aws-env-discovery/aws-secrets-to-env skills
+brew "xcodes"       # manages the installed Xcode-26.2.0.app
 
 # ============================================================================
 # Security & Encryption
@@ -103,6 +106,17 @@ brew "age"          # modern file encryption
 brew "openssh"
 brew "ssh-copy-id"
 cask "lulu"         # outbound firewall (macOS firewall only blocks inbound)
+cask "malwarebytes" # anti-malware
+cask "oversight"    # Objective-See: mic/camera access alerts
+cask "reikey"       # Objective-See: keylogger detection
+cask "kextviewr"    # Objective-See: kernel extension viewer
+cask "taskexplorer" # Objective-See: process/task inspector
+cask "blockblock"   # Objective-See: real-time persistence-install alerts
+cask "knockknock"   # Objective-See: on-demand persistence-location audit
+cask "whatsyoursign" # Objective-See: Finder code-signing info
+cask "ransomwhere"  # Objective-See: behavioral ransomware detection
+cask "netiquette"   # Objective-See: per-process network connection monitor
+cask "santa"        # Google/North Pole Security: ESF binary authorization (Gatekeeper supplement) — installed in MONITOR (non-blocking) mode, see FRICTION.md
 
 # ============================================================================
 # Databases
@@ -124,6 +138,12 @@ cask "mitmproxy"    # HTTP proxy/inspector
 brew "mtr"          # traceroute + ping
 brew "doggo"        # DNS client
 brew "telnet"
+brew "wireshark"        # tshark CLI (packet capture/analysis)
+cask "wireshark-app"    # Wireshark GUI
+cask "anydesk"          # remote desktop
+cask "tigervnc"         # VNC client
+cask "vnc-viewer"       # VNC client (RealVNC) — friction-listed alongside tigervnc, see FRICTION.md
+cask "localsend"        # cross-platform local file transfer (AirDrop-alike for non-Apple devices)
 
 # ============================================================================
 # Build Dependencies (mise Erlang/Elixir)
@@ -163,25 +183,33 @@ brew "p7zip"        # 7z support
 # brew "gawk"
 
 # ============================================================================
+# Media / Video Pipeline
+# Backs the ffmpeg-expert/imagemagick-expert/bash-pipeline-expert skills and
+# the video-pipeline-build/curate contexts.
+# ============================================================================
+
+brew "ffmpeg"
+brew "exiftool"
+brew "imagemagick"
+brew "yt-dlp"
+brew "aria2"        # yt-dlp external downloader backend (parallel segment fetch)
+brew "sdl2-compat"  # satisfies ffmpeg's sdl2 dep via the sdl3-backed compat shim
+brew "sdl3"         # sdl2-compat's actual backend
+
+# ============================================================================
 # === Optional: Media Tools ===
 # Install ad-hoc when needed. Uncomment for a full media workstation.
 # ============================================================================
 
-# brew "ffmpeg"
 # brew "ffmpegthumbnailer"
-# brew "exiftool"
-# brew "imagemagick"
 # brew "imageoptim-cli"
 # brew "figlet"
 # brew "asciinema"
-# brew "yt-dlp"
 # brew "transmission-cli"
 # brew "pdfgrep"
 # brew "graphviz"
 # brew "gnuplot"
 # brew "yasm"
-# brew "x264"
-# brew "lame"
 # brew "xvid"
 
 # ============================================================================
@@ -190,6 +218,8 @@ brew "p7zip"        # 7z support
 
 cask "ghostty"
 cask "vscodium"
+cask "cursor"       # AI code editor
+cask "cursor-cli"
 
 # ============================================================================
 # Casks: Browsers
@@ -225,13 +255,17 @@ cask "qlmarkdown"   # Quick Look markdown preview
 cask "crystalfetch" # macOS installer downloader
 brew "tailscale"        # Tailscale CLI
 cask "tailscale-app"  # Mesh VPN
+cask "raycast"          # Spotlight replacement/launcher
+cask "obsidian"         # notes/PKM
+cask "background-music" # per-app volume control / audio routing
+cask "slack"
+cask "zoom"
+brew "asciiquarium"     # terminal aquarium; lean-provisioning lock/screensaver experience
 
 # === Optional: Proprietary Apps ===
 # Uncomment based on personal preference.
 
 # cask "1password"  # FOSS alternative: Bitwarden
-# cask "obsidian"   # FOSS alternative: Logseq
-# cask "raycast"    # No strong FOSS launcher alternative on macOS
 
 # ============================================================================
 # Casks: Claude
@@ -239,6 +273,7 @@ cask "tailscale-app"  # Mesh VPN
 
 cask "claude"
 cask "claude-code@latest"  # bleeding-edge channel; "claude-code" is stable
+brew "ccusage"             # Claude Code usage/cost tracker
 
 # ============================================================================
 # Fonts
