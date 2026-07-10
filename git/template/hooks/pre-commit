@@ -10,9 +10,12 @@
 #   - exit 0 silently if $PORTABLE_REFS_BLOCKLIST is empty or unset
 #   - exit 0 silently if the cwd repo's toplevel sits inside any blocked
 #     prefix (operator-private surface; the rule fires at the boundary)
-#   - else grep staged additions against three forms of each blocklist
-#     entry (literal, $HOME-prefixed, ~/-prefixed); on hit, fail with a
-#     one-line pointer to the convention by name
+#   - else: (a) block staged *markdown* additions that cite a private
+#     decision record (ADR-NNNN) — shipped repos read like man pages,
+#     citing only what resolves for any reader; (b) grep staged additions
+#     against three forms of each blocklist entry (literal,
+#     $HOME-prefixed, ~/-prefixed); on hit, fail with a one-line pointer
+#     to the convention by name
 #
 # $HOME is read at runtime — the hook itself is operator-agnostic and
 # safe to ship anywhere. Convention: "portable-references" in the
@@ -35,6 +38,17 @@ if [ -n "$toplevel" ]; then
       "$p_slashed"*) exit 0 ;;
     esac
   done
+fi
+
+# --- man-page register: no private decision-record citations ---
+# Runs only in shipped (non-blocklisted) repos, per the self-disable
+# above. Scoped to markdown: code and test fixtures may carry the
+# pattern as data.
+if git diff --cached --diff-filter=ACM -U0 -- '*.md' \
+    | grep -E '^\+[^+]' \
+    | grep -Eq 'ADR-[0-9]'; then
+  echo "man-page register: staged markdown cites a private decision record (ADR-NNNN) — state the behavior present-tense or cite public prior art (convention: 'portable-references' in the operator's kb)." >&2
+  exit 1
 fi
 
 # Build three forms per entry: literal, $HOME-prefixed, ~/-prefixed.
