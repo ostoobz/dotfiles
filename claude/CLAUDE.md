@@ -33,14 +33,14 @@ When the conversation is about architecture, design tradeoffs, or non-trivial te
 - Use comparison tables and decision trees for branching choices
 - Include rejected alternatives and *why* — the rejection reasoning is part of the value
 - Goal is durable mental models across projects, not single-project optimization
-- Persist durable architectural lessons to `~/.stoobz/kb/` (ADRs, decision trees, patterns) so they outlive the session
+- Persist durable architectural lessons to `~/.stoobz/kb/` (ADRs, decision trees, patterns) so they outlive the session — following its authoring rules: read `~/.stoobz/kb/CLAUDE.md` before writing
 
 ## Knowledge Base
 
 - `~/.stoobz/kb/` — cross-project, durable architectural knowledge (ADRs, decision trees, named patterns). **Operator-private** — never referenced by path from a shipped artifact.
 - `<project>/.stoobz/` — project-local session artifacts (handoffs, in-progress work, session memory).
 - From operator-private surfaces only (project memory, context loaders, files under `~/.claude/` or `~/.stoobz/kb/`), reference KB entries by path so canonical docs are loaded fresh per session. From shipped artifacts (anything in a git repo whose commits leave this machine), see **Boundaries** below — cite by name, not path.
-- **Load-bearing KB entries to pull during design/planning** — named here so they surface *before* a decision, not after (patterns and decision trees have weak triggers otherwise): conventions `composable-units`, `portable-references`, `diataxis`; patterns `snapshot-immutable-runs`, `wal-for-artifacts`, `python-cli-starter`; decision trees `where-to-place-the-contract`. Read the specific file when its decision is in play — don't act on this summary alone.
+- **Load-bearing KB entries to pull during design/planning** — named here so they surface *before* a decision, not after (patterns and decision trees have weak triggers otherwise): conventions `composable-units`, `portable-references`, `diataxis`, `progressive-disclosure`; patterns `snapshot-immutable-runs`, `wal-for-artifacts`, `python-cli-starter`; decision trees `where-to-place-the-contract`, `where-to-place-the-memory`. Read the specific file when its decision is in play — don't act on this summary alone.
 
 ## Boundaries
 
