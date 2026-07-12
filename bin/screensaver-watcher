@@ -44,7 +44,7 @@ main() {
       # -na: new instance, don't activate/steal focus away from an already-
       # idle session. Title lets a human recognize the window; termination
       # relies on the `-e` command exiting (see below), not window-targeting.
-      open -na "$GHOSTTY" --args --title="$MARKER_TITLE" --fullscreen=true -e asciiquarium
+      open -na "$GHOSTTY" --args --title="$MARKER_TITLE" --fullscreen=true -e /opt/homebrew/bin/asciiquarium
     fi
   else
     # Kill the asciiquarium process, not Ghostty itself — Ghostty closes a
