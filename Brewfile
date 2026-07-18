@@ -142,8 +142,7 @@ brew "telnet"
 brew "wireshark"        # tshark CLI (packet capture/analysis)
 cask "wireshark-app"    # Wireshark GUI
 cask "anydesk"          # remote desktop
-cask "tigervnc"         # VNC client
-cask "vnc-viewer"       # VNC client (RealVNC) — friction-listed alongside tigervnc, see FRICTION.md
+cask "tigervnc"         # VNC client — remote access for windex (Win11 provisioning + Tailscale)
 cask "localsend"        # cross-platform local file transfer (AirDrop-alike for non-Apple devices)
 
 # ============================================================================

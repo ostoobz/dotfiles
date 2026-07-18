@@ -118,7 +118,13 @@ section_idle_assets() {
   # 2026-07). The confirmed lever is disabling the LaunchDaemon outright —
   # the wallpaper/screensaver picker UI still opens, it just shows anything
   # not already cached as unavailable instead of fetching it.
+  #
+  # `disable` alone only stops it from loading on the NEXT launchd cycle — if
+  # it's already running (the normal case, launchd starts it at boot), the
+  # live instance keeps running until something also unloads it. `bootout`
+  # does that; harmless/expected to fail if it wasn't loaded to begin with.
   # Revert: sudo launchctl enable system/com.apple.idleassetsd && sudo launchctl kickstart -k system/com.apple.idleassetsd
+  sudo launchctl bootout system/com.apple.idleassetsd 2>/dev/null || true
   if sudo launchctl disable system/com.apple.idleassetsd 2>/dev/null; then
     success "idleassetsd disabled"
     DEFAULTS_APPLIED=$((DEFAULTS_APPLIED + 1))
@@ -127,10 +133,19 @@ section_idle_assets() {
     DEFAULTS_FAILED=$((DEFAULTS_FAILED + 1))
   fi
 
-  if sudo launchctl print-disabled system 2>/dev/null | grep -q '"com.apple.idleassetsd" => true'; then
+  # Loosely matched on purpose — the exact quote/spacing format of
+  # `print-disabled`'s output isn't nailed down across macOS versions; this
+  # just needs "the daemon's line says true", not an exact string match.
+  if sudo launchctl print-disabled system 2>/dev/null | grep "com.apple.idleassetsd" | grep -q "true"; then
     success "Read-back: com.apple.idleassetsd disabled"
   else
     warn "Read-back mismatch: idleassetsd may still be enabled"
+  fi
+
+  if sudo launchctl print system/com.apple.idleassetsd 2>/dev/null | grep -q "state = running"; then
+    warn "idleassetsd is still running right now (disable takes effect next load, not immediately) — bootout above should have stopped it; re-check manually if this persists"
+  else
+    success "Read-back: idleassetsd is not currently running"
   fi
 
   # Cache purge — root-owned, version-dependent path (confirmed on Sonoma/

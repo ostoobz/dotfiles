@@ -135,6 +135,23 @@ apply_sudo_default() {
   fi
 }
 
+# Same contract as apply_sudo_default, but for `pmset` instead of `defaults` —
+# pmset isn't a defaults domain, so routing it through apply_sudo_default runs
+# `sudo defaults pmset ...`, which defaults rejects (dumps its own usage text
+# and exits non-zero). Every pmset-based setting in this repo silently no-op'd
+# for that reason until this was added.
+apply_sudo_pmset() {
+  local description="$1"
+  shift
+
+  if sudo pmset "$@" 2>/dev/null; then
+    DEFAULTS_APPLIED=$((DEFAULTS_APPLIED + 1))
+  else
+    warn "skip: $description"
+    DEFAULTS_FAILED=$((DEFAULTS_FAILED + 1))
+  fi
+}
+
 # Set a nested plist value via PlistBuddy. Tries Set first (value exists),
 # falls back to Add (value does not exist). One call per setting instead of
 # the five-line try/Add pattern used in the source scripts.

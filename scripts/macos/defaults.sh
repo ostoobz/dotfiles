@@ -26,7 +26,20 @@ main() {
   step "General UI/UX"
   # ==========================================================================
 
-  apply_sudo_default "Disable boot sound" write /Library/Preferences/SystemConfiguration/com.apple.Boot.plist SystemAudioVolume " "
+  # com.apple.Boot.plist's SystemAudioVolume is the Intel-era boot-chime
+  # mechanism; Apple Silicon Macs mute via an NVRAM variable instead, so the
+  # legacy write here silently no-ops on arm64. Revert: sudo nvram -d StartupMute
+  if [ "$(uname -m)" = "arm64" ]; then
+    if sudo nvram StartupMute=%01 2>/dev/null; then
+      success "Disable boot sound (nvram StartupMute)"
+      DEFAULTS_APPLIED=$((DEFAULTS_APPLIED + 1))
+    else
+      warn "skip: Disable boot sound (nvram StartupMute)"
+      DEFAULTS_FAILED=$((DEFAULTS_FAILED + 1))
+    fi
+  else
+    apply_sudo_default "Disable boot sound" write /Library/Preferences/SystemConfiguration/com.apple.Boot.plist SystemAudioVolume " "
+  fi
   apply_default "Sidebar icon size" write NSGlobalDomain NSTableViewDefaultSizeMode -int 2
   apply_default "Always show scrollbars" write NSGlobalDomain AppleShowScrollBars -string "Always"
   apply_default "Disable focus ring animation" write NSGlobalDomain NSUseAnimatedFocusRing -bool false
@@ -75,12 +88,12 @@ main() {
   step "Energy"
   # ==========================================================================
 
-  apply_sudo_default "Lid wakeup" pmset -a lidwake 1
-  apply_sudo_default "Auto-restart on power loss" pmset -a autorestart 1
-  apply_sudo_default "Display sleep on battery (5 min)" pmset -b displaysleep 5
-  apply_sudo_default "Display sleep on power (10 min)" pmset -c displaysleep 10
-  apply_sudo_default "Machine sleep on battery (15 min)" pmset -b sleep 15
-  apply_sudo_default "Machine sleep on power (never)" pmset -c sleep 0
+  apply_sudo_pmset "Lid wakeup" -a lidwake 1
+  apply_sudo_pmset "Auto-restart on power loss" -a autorestart 1
+  apply_sudo_pmset "Display sleep on battery (5 min)" -b displaysleep 5
+  apply_sudo_pmset "Display sleep on power (10 min)" -c displaysleep 10
+  apply_sudo_pmset "Machine sleep on battery (15 min)" -b sleep 15
+  apply_sudo_pmset "Machine sleep on power (never)" -c sleep 0
 
   # ==========================================================================
   step "Screen & screenshots"
