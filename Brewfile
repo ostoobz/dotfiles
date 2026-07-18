@@ -93,6 +93,7 @@ brew "tmux"
 brew "mise"         # version manager (no shims)
 brew "mas"          # Mac App Store CLI
 brew "powershell"   # cross-platform pwsh, paired with windows-provisioning/windows-batch-scripting skills
+brew "dotnet"       # powershell's runtime dependency
 brew "awscli"       # paired with aws-env-discovery/aws-secrets-to-env skills
 brew "xcodes"       # manages the installed Xcode-26.2.0.app
 
@@ -193,6 +194,7 @@ brew "exiftool"
 brew "imagemagick"
 brew "yt-dlp"
 brew "aria2"        # yt-dlp external downloader backend (parallel segment fetch)
+brew "deno"         # yt-dlp's JS runtime for solving YouTube signature/nsig challenges
 brew "sdl2-compat"  # satisfies ffmpeg's sdl2 dep via the sdl3-backed compat shim
 brew "sdl3"         # sdl2-compat's actual backend
 
