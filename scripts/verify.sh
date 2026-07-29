@@ -129,15 +129,27 @@ check_submodule_freshness() {
     return 0
   fi
 
-  default_branch=$(git -C "$submodule_dir" ls-remote --symref origin HEAD 2>/dev/null \
-    | awk '/^ref:/ {sub("refs/heads/", "", $2); print $2}')
+  # A declared `branch =` is what `git submodule update --remote` follows, so it
+  # is what freshness must be measured against; the remote's default is only the
+  # fallback. Every line below names the branch actually compared, so a wrong
+  # declaration shows up in the output instead of silently skewing the answer.
+  # `|| default_branch=""` — `git config --get` exits 1 on a missing key, which
+  # aborts the script under `bash -e`.
+  default_branch=$(git config --file "${DOTFILES_ROOT}/.gitmodules" \
+    --get "submodule.${submodule_path}.branch" 2>/dev/null) || default_branch=""
+
+  if [ -z "$default_branch" ]; then
+    default_branch=$(git -C "$submodule_dir" ls-remote --symref origin HEAD 2>/dev/null \
+      | awk '/^ref:/ {sub("refs/heads/", "", $2); print $2}')
+  fi
+
   if [ -z "$default_branch" ]; then
     warn "${submodule_path}: origin unreachable — freshness unknown"
     return 0
   fi
 
   if ! git -C "$submodule_dir" fetch -q origin "$default_branch" 2>/dev/null; then
-    warn "${submodule_path}: fetch failed — freshness unknown"
+    warn "${submodule_path}: cannot fetch origin/${default_branch} — freshness unknown"
     return 0
   fi
 

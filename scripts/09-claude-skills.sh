@@ -41,9 +41,28 @@ link_claude_skills() {
   fi
 }
 
+# Provisions only — never reconciles. `submodule update` on an already-present
+# submodule checks out the pinned SHA in detached HEAD, moving the operator off
+# whatever branch they were working on; the enumerated list this replaced is why
+# one submodule sits detached and another doesn't. Advancing a pin is a
+# deliberate, commit-producing act (`git submodule update --remote <path>`, then
+# commit the gitlink), not a side effect of provisioning a machine. verify.sh
+# reports when a pin is behind.
+#
+# Derived from .gitmodules so declaration is the single source of truth: adding
+# a submodule there is all it takes for install to provision it.
 init_submodules() {
-  info "Initializing Claude skill submodules"
-  git -C "$DOTFILES_ROOT" submodule update --init claude/skills/session-kit claude/vendor/anthropics-skills
+  info "Initializing submodules"
+
+  git config --file "${DOTFILES_ROOT}/.gitmodules" --get-regexp '\.path$' 2>/dev/null \
+    | while read -r _ path; do
+      if [ -e "${DOTFILES_ROOT}/${path}/.git" ]; then
+        info "Already present: ${path}"
+      else
+        git -C "$DOTFILES_ROOT" submodule update --init -- "$path"
+        success "Initialized: ${path}"
+      fi
+    done
 }
 
 link_vendor_skills() {
