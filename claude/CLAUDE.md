@@ -40,7 +40,20 @@ When the conversation is about architecture, design tradeoffs, or non-trivial te
 - `~/.stoobz/kb/` — cross-project, durable architectural knowledge (ADRs, decision trees, named patterns). **Operator-private** — never referenced by path from a shipped artifact.
 - `<project>/.stoobz/` — project-local session artifacts (handoffs, in-progress work, session memory).
 - From operator-private surfaces only (project memory, context loaders, files under `~/.claude/` or `~/.stoobz/kb/`), reference KB entries by path so canonical docs are loaded fresh per session. From shipped artifacts (anything in a git repo whose commits leave this machine), see **Boundaries** below — cite by name, not path.
-- **Load-bearing KB entries to pull during design/planning** — named here so they surface *before* a decision, not after (patterns and decision trees have weak triggers otherwise): conventions `composable-units`, `portable-references`, `diataxis`, `progressive-disclosure`; patterns `snapshot-immutable-runs`, `wal-for-artifacts`, `python-cli-starter`; decision trees `where-to-place-the-contract`, `where-to-place-the-memory`. Read the specific file when its decision is in play — don't act on this summary alone.
+- **Load-bearing KB entries — read the file when its moment fires.** Triggered by moment, not by task mode: "am I designing or implementing?" is self-assessed and misfires (every implementation carries some design), while these moments are observable in the work. Firing is unconditional — no phase gate. Read the specific file; don't act on the moment line alone.
+
+  | Entry | Fires when |
+  | --- | --- |
+  | `where-to-place-the-contract` | a fact is about to exist in two places; choosing where config, state, or schema lives |
+  | `composable-units` | a surface serves two readers; adding a second responsibility to an existing one |
+  | `portable-references` | writing a filesystem path into anything that gets committed |
+  | `context-agnostic-primitives` | writing into the kb |
+  | `diataxis` | adding a doc, or deciding repo-vs-kb for something just learned |
+  | `progressive-disclosure` | authoring a unit that will be listed among others (skill, kb entry, README section) |
+  | `where-to-place-the-memory` | deciding where session or project state persists |
+  | `snapshot-immutable-runs` | a process emits output a later run could overwrite |
+  | `wal-for-artifacts` | a multi-step write could be interrupted partway |
+  | `python-cli-starter` | scaffolding a new Python CLI |
 
 ## Boundaries
 
