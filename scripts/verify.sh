@@ -114,31 +114,65 @@ info "Checking submodule freshness (claude/skills/*)"
 # the man-page-purge staleness (session-kit sat behind for days unnoticed)
 # means a warn-only fetch here is worth the round trip. Warn-only: does not
 # fail verify or touch FAILED, since a stale pin is a nudge, not a broken repo.
+#
+# Every path emits exactly one line. A silent section reads as "nothing ran",
+# and the trailing tally then looks like it belongs to this check — and an
+# unconditional trailing OK would report "fresh" for the uninitialized and
+# offline cases, which are unknown, not fresh.
 check_submodule_freshness() {
   submodule_path="$1"
   submodule_dir="${DOTFILES_ROOT}/${submodule_path}"
 
   # Submodules use a .git *file* (gitdir pointer), not a .git directory.
-  [ -e "${submodule_dir}/.git" ] || return 0
+  if [ ! -e "${submodule_dir}/.git" ]; then
+    warn "${submodule_path}: not initialized — run 'git submodule update --init'"
+    return 0
+  fi
 
   default_branch=$(git -C "$submodule_dir" ls-remote --symref origin HEAD 2>/dev/null \
     | awk '/^ref:/ {sub("refs/heads/", "", $2); print $2}')
-  [ -n "$default_branch" ] || return 0
+  if [ -z "$default_branch" ]; then
+    warn "${submodule_path}: origin unreachable — freshness unknown"
+    return 0
+  fi
 
-  git -C "$submodule_dir" fetch -q origin "$default_branch" 2>/dev/null || return 0
+  if ! git -C "$submodule_dir" fetch -q origin "$default_branch" 2>/dev/null; then
+    warn "${submodule_path}: fetch failed — freshness unknown"
+    return 0
+  fi
 
-  behind=$(git -C "$submodule_dir" rev-list --count HEAD.."FETCH_HEAD" 2>/dev/null)
-  if [ -n "$behind" ] && [ "$behind" -gt 0 ]; then
+  # `|| behind=""` matters: install runs this script under `bash -e`, where a
+  # bare assignment from a failing command substitution aborts the script.
+  behind=$(git -C "$submodule_dir" rev-list --count HEAD.."FETCH_HEAD" 2>/dev/null) || behind=""
+  if [ -z "$behind" ]; then
+    warn "${submodule_path}: cannot compare with origin/${default_branch}"
+  elif [ "$behind" -gt 0 ]; then
     warn "${submodule_path}: ${behind} commit(s) behind origin/${default_branch}"
+  else
+    success "${submodule_path}: current with origin/${default_branch}"
   fi
 }
 
-git config --file "${DOTFILES_ROOT}/.gitmodules" --get-regexp '\.path$' 2>/dev/null \
-  | while read -r _ path; do
-    case "$path" in
-      claude/skills/*) check_submodule_freshness "$path" ;;
-    esac
+# Gated on declaration (.gitmodules), not on presence (directory exists / has
+# skills). Declaration is the operator's contract; presence is derived state.
+# Gating on presence would silence the check exactly where it should speak — a
+# declared submodule whose directory is missing is the broken state worth
+# reporting. Declaring none is a valid configuration (no Claude skills, or
+# deprecated), so it is `info`, not a warning: dropping the entries is all it
+# takes to opt out, with no change to this script or the bootstrap steps.
+#
+# Collect first, then loop — piping into `while` would run the body in a
+# subshell, and the empty case needs to be distinguishable from the fresh one.
+SUBMODULE_PATHS=$(git config --file "${DOTFILES_ROOT}/.gitmodules" --get-regexp '\.path$' 2>/dev/null \
+  | awk '$2 ~ /^claude\/skills\// {print $2}')
+
+if [ -z "$SUBMODULE_PATHS" ]; then
+  info "No claude/skills/* submodules declared — skipping"
+else
+  for submodule in $SUBMODULE_PATHS; do
+    check_submodule_freshness "$submodule"
   done
+fi
 
 padding
 if [ "$FAILED" -gt 0 ]; then
