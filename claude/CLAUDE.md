@@ -53,6 +53,7 @@ When the conversation is about architecture, design tradeoffs, or non-trivial te
   | `where-to-place-the-memory` | deciding where session or project state persists |
   | `snapshot-immutable-runs` | a process emits output a later run could overwrite |
   | `wal-for-artifacts` | a multi-step write could be interrupted partway |
+  | `choosing-the-implementation-language` | a language or runtime is about to be chosen for a new tool |
   | `python-cli-starter` | scaffolding a new Python CLI |
 
 ## Boundaries
@@ -72,6 +73,8 @@ When scaffolding a new repo on this machine, or first working in a repo that pre
 ## Language Conventions
 
 Language-specific conventions live in `{lang}-expert` skills (e.g., `elixir-expert`, `ecto-expert`). Load the relevant skill when working in that language.
+
+**Which language, though, is decided before any of these load.** The set of expert skills on hand is not the set of candidate languages — pre-filtering by what's available is the law of the instrument, and it runs before deliberation so the deliberation still looks sound. Derive candidates from the tool's shape first; a language with no expert skill is a gap to author, not a veto. Full treatment: `choosing-the-implementation-language` (see the load-bearing table above).
 
 ## General Code Style
 
