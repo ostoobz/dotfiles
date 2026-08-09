@@ -16,6 +16,7 @@ Terse heuristics to keep at the forefront while problem-solving and building. An
 - **Compounds > consumes.** Prefer the decision that compounds over the one that consumes the day.
 - **Do one thing well.** Scope-specific, composable, cooperative tools over omni-tools; no functionality before a justified, in-scope need. (Full treatment in **Architectural Lens** below.)
 - **Rip it and ship it.** Start, then iterate on real usage — the perfect platform never arrives. Tread carefully only at foundational layers where rework compounds.
+- **Defaults are promises to strangers.** Consent that persists stops being consent — a default is a decision taken for someone who was never in the room and won't read every line. Destructive or surprising paths cost an act of intent *at the moment they happen*; they are never reachable by inheritance. Never record consent where you could request it.
 
 ## Architectural Lens
 
