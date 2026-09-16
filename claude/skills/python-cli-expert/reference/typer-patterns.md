@@ -81,7 +81,7 @@ def cmd(
     ...
 ```
 
-The `Argument(...)` / `Option(...)` first arg is the default. `...` (literal Ellipsis) means *required*. Path constraints (`exists`, `readable`, etc.) move filesystem validation into the parser.
+The `Argument(...)` / `Option(...)` first arg is the default. `...` (literal Ellipsis) means _required_. Path constraints (`exists`, `readable`, etc.) move filesystem validation into the parser.
 
 ## Custom Enums for Choice Validation
 
@@ -211,12 +211,12 @@ with Progress(SpinnerColumn(), TextColumn("{task.description}"), transient=True)
 
 ## Comparison: typer vs alternatives
 
-| Library | Strength | When to choose |
-|---|---|---|
-| **typer** | Type-hint-driven, terse, modern, built on `click` | Default for any new CLI. ~3-line skeleton for one command. |
-| **click** | Mature, huge ecosystem, decorators | When you need a click-only plugin or library that already extends click. |
-| **argparse** (stdlib) | Zero deps, ships everywhere | Single-file tools where adding a dep is overkill — e.g. a one-off ops script with `uv` unavailable. |
-| **fire** | Auto-generates CLI from any object/function | Quick-and-dirty exploration; not for production CLIs (poor help generation, surprising flag parsing). |
+| Library               | Strength                                          | When to choose                                                                                        |
+| --------------------- | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| **typer**             | Type-hint-driven, terse, modern, built on `click` | Default for any new CLI. ~3-line skeleton for one command.                                            |
+| **click**             | Mature, huge ecosystem, decorators                | When you need a click-only plugin or library that already extends click.                              |
+| **argparse** (stdlib) | Zero deps, ships everywhere                       | Single-file tools where adding a dep is overkill — e.g. a one-off ops script with `uv` unavailable.   |
+| **fire**              | Auto-generates CLI from any object/function       | Quick-and-dirty exploration; not for production CLIs (poor help generation, surprising flag parsing). |
 
 For multi-subcommand CLI tools: typer. The type-hint discipline doubles as inline documentation.
 

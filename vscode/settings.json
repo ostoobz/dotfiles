@@ -43,4 +43,5 @@
   "elixirLS.suggestSpecs": true,
   "markdown.preview.linkify": false,
   "workbench.editor.enablePreviewFromCodeNavigation": true,
+  "telemetry.feedback.enabled": false,
 }
