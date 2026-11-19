@@ -25,6 +25,7 @@
 - Run tests after changes when a test suite exists
 - Run the project formatter before suggesting commits
 - Check for available skills before starting complex multi-step tasks
+- **Plans that clear context**: When accepting a plan that clears conversation history, ensure the plan file itself contains all required context — skill/context loaders to invoke, commit strategy, and execution rules. Conversation instructions don't survive context clearing; the plan file does.
 
 ## Session Artifacts
 
