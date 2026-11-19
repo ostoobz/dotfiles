@@ -10,3 +10,12 @@ insert_final_newline = true
 
 [*.md]
 trim_trailing_whitespace = false
+
+[*.cs]
+indent_style = space
+indent_size = 4
+
+# C#/.NET code style examples
+csharp_new_line_before_open_brace = all
+csharp_preserve_single_line_statements = false
+csharp_indent_switch_labels = true
