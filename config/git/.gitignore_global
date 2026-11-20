@@ -151,22 +151,10 @@ tags
 ################################################################################
 
 *.log
-*.sql
+# *.sql
 *.sqlite
 *.cache
 *.tmp
-
-################################################################################
-# Python                                                                       #
-################################################################################
-
-__pycache__/
-*.py[cod]
-*$py.class
-*.egg-info/
-dist/
-.venv/
-.ruff_cache/
 
 ################################################################################
 # Node                                                                         #
@@ -182,8 +170,87 @@ jspm_packages/
 
 .htaccess
 sitemap.xml
-**/.stoobz/
 
 # Generated from template — machine-specific
 .gitconfig
 .claude
+
+stoobz.md
+stoobz0.md
+stoobz1.md
+stoobz.ex
+stoobz0.ex
+stoobz1.ex
+stoobz2.ex
+stoobz4.ex
+playground.ex
+.iex.exs
+.oldiex.exs
+demo-document.pdf
+/data
+cumulio.md
+api-request.txt
+todo-ici.md
+settlements-notes.md
+stoobz-notes.md
+stoobz_test.exs
+stoobz_factory_test_setups.exs
+
+stoobz_task/
+stoobzport.ex
+.elixirls-error-logs
+current-todos.md
+
+temp-xsl/sample-input1.xlsx
+temp-xsl/sample-input2.xlsx
+temp-queries/
+stoobz_test.json
+.stoobz/
+.sql_queries/
+.stoobz_temp/
+stoobz_ground.ex
+
+dets_simple_storage
+encryption_vault
+/temp
+CLAUDE.md
+build.log
+
+
+# stoobz_factory_test_setups
+.localdev
+.logs/
+/.logs
+.env.qa
+.env*
+**/*CLAUDE.md
+.claude/
+logfile
+**/*logfile
+.claudeignore
+**/*appsettings.Development.json
+appsettings.Development.json
+/Users/jamesstephens/repos/DriveApp/DriveApp.Client/wwwroot/appsettings.Development.json
+**/.stoobz/
+.stoobz/*
+
+
+CONTEXT_FOR_NEXT_SESSION.md
+PROMPT_LAB.md
+TLDR.md
+
+.mise.toml
+cdotnet.sh
+.worktrees/
+cfdotnet.sh
+sasdotnet.sh
+meh-schema.sh
+.worktrees/
+dotnet-tools.json
+oms-sac.sh
+oms-*.sh
+.java-version
+vendor-portal.keystore
+*.p8
+*.lscache
+.tool-versions

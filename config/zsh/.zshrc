@@ -71,6 +71,10 @@ path_prepend "${HOME}/bin"
 # PostgreSQL (libpq provides psql, pg_dump, etc.)
 path_prepend "/opt/homebrew/opt/libpq/bin"
 
+# Keg-only binaries. icu4c tracks the opt symlink (currently icu4c@79).
+path_prepend "/opt/homebrew/opt/curl/bin"
+path_prepend "/opt/homebrew/opt/icu4c/bin"
+
 # Export path
 export PATH
 
@@ -132,6 +136,14 @@ zstyle ':completion:*:messages' format '%d'
 zstyle ':completion:*:warnings' format 'No matches for: %d'
 zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
 zstyle ':completion:*' group-name ''
+
+# ============================================================================
+# asdf Version Manager (installed via Homebrew)
+# ============================================================================
+
+#if [[ -f "/opt/homebrew/opt/asdf/libexec/asdf.sh" ]]; then
+#   source "/opt/homebrew/opt/asdf/libexec/asdf.sh"
+#fi
 
 # ============================================================================
 # Mise Version Manager
@@ -214,5 +226,47 @@ fi
 # End of Configuration
 # ============================================================================
 
-# Uncomment to see startup profiling
-# zprof
+alias cc='claude --dangerously-skip-permissions'
+
+#alias zco="nano ${HOME}/.zshrc"
+#alias zcs="source ${HOME}/.zshrc"
+alias ocfg="nano ${HOME}/.zshrc"
+alias scfg="source ${HOME}/.zshrc"
+
+#### ---- OTHER
+
+# FLAGZ
+
+# The ultimate Homebrew flag linker
+brew_link() {
+    local pkg_path="/opt/homebrew/opt/$1"
+
+    if [[ -d "$pkg_path" ]]; then
+        [[ -d "$pkg_path/include" ]] && CPPFLAGS="${CPPFLAGS:+$CPPFLAGS }-I$pkg_path/include"
+        [[ -d "$pkg_path/lib" ]]     && LDFLAGS="${LDFLAGS:+$LDFLAGS }-L$pkg_path/lib"
+    fi
+}
+
+brew_link "readline"
+brew_link "zlib"
+brew_link "openssl@3"
+brew_link "curl"
+brew_link "icu4c"
+
+# One assignment. A later export of these replaces the accumulated flags.
+export CPPFLAGS LDFLAGS
+export PKG_CONFIG_PATH="/opt/homebrew/opt/icu4c/lib/pkgconfig:/opt/homebrew/opt/openssl@3/lib/pkgconfig:/opt/homebrew/opt/curl/lib/pkgconfig:/opt/homebrew/opt/zlib/lib/pkgconfig:/opt/homebrew/opt/readline/lib/pkgconfig"
+
+###
+
+awsall() {
+  aws sso login --profile qa;
+  aws sso login --profile uat;
+}
+
+#alias ls='ls -lah --sort oldest'
+alias cls='clear; ls -lah --sort oldest'
+alias clr='clear;'
+
+[[ -f ~/.aliases ]] && source ~/.aliases
+[[ -f ~/.functions ]] && source ~/.functions
