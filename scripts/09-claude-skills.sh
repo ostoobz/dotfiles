@@ -137,12 +137,12 @@ provision_api_key() {
 
   if ! (: </dev/tty) 2>/dev/null; then
     warn "No terminal to ask for the API key. Add it with:"
-    warn "security add-generic-password -a \"\$USER\" -s ${KEYCHAIN_SERVICE} -w"
+    warn "keychain-set ${KEYCHAIN_SERVICE}"
     return
   fi
 
-  user "Anthropic API key for Claude Code (input hidden):"
-  if security add-generic-password -a "$USER" -s "$KEYCHAIN_SERVICE" -w </dev/tty; then
+  user "Anthropic API key for Claude Code"
+  if "${DOTFILES_ROOT}/bin/keychain-set" "$KEYCHAIN_SERVICE"; then
     success "Stored API key in keychain"
   else
     warn "API key not stored — rerun ./install --only claude-skills"

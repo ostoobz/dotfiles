@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+# keychain-set — store a secret in the macOS login keychain from hidden input.
+#
+# Usage: keychain-set <service> [account]     (account defaults to $USER)
+#
+# Not `security add-generic-password -w`: its prompt silently truncates at 128
+# characters, and passing the value as an argument puts it in the process list.
+# `security -i` takes the whole command on stdin, so neither happens.
+
+set -euo pipefail
+
+usage() { sed -n '2,4p' "$0" | sed 's/^# \{0,1\}//'; }
+
+case "${1:-}" in
+  -h | --help)
+    usage
+    exit 0
+    ;;
+  "")
+    usage >&2
+    exit 2
+    ;;
+esac
+
+service="$1"
+account="${2:-$USER}"
+
+printf 'Secret for %s (%s), input hidden: ' "$service" "$account" >/dev/tty
+IFS= read -rs secret </dev/tty
+printf '\n' >/dev/tty
+
+if [ -z "$secret" ]; then
+  echo "keychain-set: empty input, nothing stored" >&2
+  exit 1
+fi
+
+# The value travels inside a double-quoted argument on the `security -i` line.
+case "$secret" in
+  *\"* | *\\*)
+    echo "keychain-set: a secret containing \" or \\ cannot be stored this way" >&2
+    exit 1
+    ;;
+esac
+
+printf 'add-generic-password -U -a "%s" -s "%s" -w "%s"\n' "$account" "$service" "$secret" | security -i
+
+if [ "$(security find-generic-password -s "$service" -a "$account" -w 2>/dev/null)" != "$secret" ]; then
+  echo "keychain-set: the stored value does not match what was entered" >&2
+  exit 1
+fi
+
+echo "Stored ${#secret} characters under service '${service}', account '${account}'."

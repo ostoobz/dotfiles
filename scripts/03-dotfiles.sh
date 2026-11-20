@@ -46,6 +46,11 @@ link_dotfiles() {
   mkdir -p "${HOME}/.config/direnv"
   symlink "${DOTFILES_ROOT}/config/direnv/direnv.toml" "${HOME}/.config/direnv/direnv.toml"
 
+  # Commands meant to be run by hand; ~/.local/bin is on PATH via .zshrc.
+  mkdir -p "${HOME}/.local/bin"
+  symlink "${DOTFILES_ROOT}/bin/keychain-set" "${HOME}/.local/bin/keychain-set"
+  symlink "${DOTFILES_ROOT}/bin/install-portable-refs-hook" "${HOME}/.local/bin/install-portable-refs-hook"
+
   success "Symlinked all config files"
 }
 

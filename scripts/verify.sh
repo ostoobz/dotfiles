@@ -63,6 +63,8 @@ check_symlink "${DOTFILES_ROOT}/config/bat/config" "${HOME}/.config/bat/config"
 check_symlink "${DOTFILES_ROOT}/config/ripgrep/.ripgreprc" "${HOME}/.config/ripgrep/.ripgreprc"
 check_symlink "${DOTFILES_ROOT}/config/ssh/config" "${HOME}/.ssh/config"
 check_symlink "${DOTFILES_ROOT}/config/direnv/direnv.toml" "${HOME}/.config/direnv/direnv.toml"
+check_symlink "${DOTFILES_ROOT}/bin/keychain-set" "${HOME}/.local/bin/keychain-set"
+check_symlink "${DOTFILES_ROOT}/bin/install-portable-refs-hook" "${HOME}/.local/bin/install-portable-refs-hook"
 check_symlink "${DOTFILES_ROOT}/hooks/pre-commit" "${DOTFILES_ROOT}/.git/hooks/pre-commit"
 
 if [ -f "${DOTFILES_ROOT}/config/git/.gitconfig" ]; then
