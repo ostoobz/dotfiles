@@ -41,6 +41,11 @@ bash.
 | 10  | `editor`        | VSCodium settings and extensions                |
 | 11  | `macos`         | macOS hardening: defaults, Finder, firewall     |
 
+## After installing
+
+Signing in and storing credentials for the installed tools (keychain, AWS single sign-on, Jira) is
+covered in [docs/setup](docs/setup/README.md).
+
 ## Layout
 
 ```

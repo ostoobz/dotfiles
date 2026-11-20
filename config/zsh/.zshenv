@@ -12,3 +12,7 @@ export XDG_STATE_HOME="${HOME}/.local/state"
 # included; no interactivity dependence.
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
+
+# AWS CLI — never open a pager. Scripts and agent shells have no terminal to
+# page into, and hang waiting on one.
+export AWS_PAGER=""
