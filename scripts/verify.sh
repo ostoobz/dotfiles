@@ -108,6 +108,28 @@ else
 fi
 
 padding
+info "Checking Claude Code"
+
+SK_SRC="${DOTFILES_ROOT}/claude/skills/session-kit/bin/sk"
+if [ -x "$SK_SRC" ]; then
+  check_symlink "$SK_SRC" "${HOME}/.local/bin/sk"
+else
+  info "session-kit not present — skipping sk"
+fi
+
+# Runs the declared helper rather than naming the keychain item, so
+# settings.json stays the only place that says where the key lives.
+API_KEY_HELPER=$(jq -r '.apiKeyHelper // empty' "${DOTFILES_ROOT}/claude/settings.json" 2>/dev/null) || API_KEY_HELPER=""
+if [ -z "$API_KEY_HELPER" ]; then
+  info "No apiKeyHelper declared — skipping API key"
+elif sh -c "$API_KEY_HELPER" >/dev/null 2>&1; then
+  success "apiKeyHelper returns a key"
+else
+  fail "apiKeyHelper returns nothing — ./install --only claude-skills"
+  FAILED=$((FAILED + 1))
+fi
+
+padding
 info "Checking submodule freshness (claude/skills/*)"
 
 # Adds one `git fetch` per submodule — network cost, but silence-by-design on

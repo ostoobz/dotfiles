@@ -100,7 +100,58 @@ link_vendor_skills() {
   done
 }
 
+# session-kit's skills shell out to `sk`. link-skills.sh links the skills but not
+# the binary, so without this they are present and broken.
+link_sk() {
+  SK_SRC="${DOTFILES_ROOT}/claude/skills/session-kit/bin/sk"
+
+  if [ ! -x "$SK_SRC" ]; then
+    info "session-kit not present, skipping sk"
+    return
+  fi
+
+  mkdir -p "${HOME}/.local/bin"
+  symlink "$SK_SRC" "${HOME}/.local/bin/sk"
+}
+
+# settings.json's apiKeyHelper is the contract: when it is declared and returns
+# nothing, Claude Code has no credential. The key cannot come from the repo, so
+# ask for it once on the terminal (stdin is the pipe under `curl … | bash`) and
+# never fail the step over it — verify.sh reports a helper that returns nothing.
+#
+# KEYCHAIN_SERVICE must match the `-s` name in that helper command.
+KEYCHAIN_SERVICE="anthropic-api-key"
+
+provision_api_key() {
+  helper=$(jq -r '.apiKeyHelper // empty' "${DOTFILES_ROOT}/claude/settings.json" 2>/dev/null) || helper=""
+
+  if [ -z "$helper" ]; then
+    info "No apiKeyHelper declared, skipping API key"
+    return
+  fi
+
+  if sh -c "$helper" >/dev/null 2>&1; then
+    info "API key already in keychain"
+    return
+  fi
+
+  if ! (: </dev/tty) 2>/dev/null; then
+    warn "No terminal to ask for the API key. Add it with:"
+    warn "security add-generic-password -a \"\$USER\" -s ${KEYCHAIN_SERVICE} -w"
+    return
+  fi
+
+  user "Anthropic API key for Claude Code (input hidden):"
+  if security add-generic-password -a "$USER" -s "$KEYCHAIN_SERVICE" -w </dev/tty; then
+    success "Stored API key in keychain"
+  else
+    warn "API key not stored — rerun ./install --only claude-skills"
+  fi
+}
+
 init_submodules
 link_claude_config
 link_claude_skills
 link_vendor_skills
+link_sk
+provision_api_key
