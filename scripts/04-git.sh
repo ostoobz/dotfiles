@@ -24,10 +24,12 @@ generate_gitconfig() {
     return
   fi
 
+  # Read from the terminal, not stdin: under `curl … | bash` stdin is the pipe,
+  # `read` hits EOF, and `bash -e` aborts the whole install at this step.
   user "Enter your Git user name:"
-  read -r git_name
+  read -r git_name </dev/tty
   user "Enter your Git email:"
-  read -r git_email
+  read -r git_email </dev/tty
 
   sed -e "s|__GIT_USER_NAME__|${git_name}|g" \
     -e "s|__GIT_USER_EMAIL__|${git_email}|g" \
