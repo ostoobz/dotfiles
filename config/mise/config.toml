@@ -4,3 +4,6 @@ elixir = "1.19.5-otp-28"
 node = "24.14.0"
 yarn = "4.14.1"
 python = "3.12"
+# Both SDKs land side by side in one shared DOTNET_ROOT. mise does not choose
+# between them: .NET does, from the nearest global.json, else the newest SDK.
+dotnet = ["9.0", "8.0"]
