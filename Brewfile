@@ -133,17 +133,7 @@ brew "redis"
 # Network
 # ============================================================================
 
-brew "httpie"       # HTTP client
-brew "nmap"         # network scanner
-cask "mitmproxy"    # HTTP proxy/inspector
-brew "mtr"          # traceroute + ping
-brew "doggo"        # DNS client
-brew "telnet"
 brew "wireshark"        # tshark CLI (packet capture/analysis)
-cask "wireshark-app"    # Wireshark GUI
-cask "anydesk"          # remote desktop
-cask "tigervnc"         # VNC client — remote access for windex (Win11 provisioning + Tailscale)
-cask "localsend"        # cross-platform local file transfer (AirDrop-alike for non-Apple devices)
 
 # ============================================================================
 # Build Dependencies (mise Erlang/Elixir)
@@ -237,9 +227,6 @@ cask "google-chrome"
 
 brew "docker"       # Docker CLI only
 brew "docker-compose"
-brew "colima"       # Container runtime (replaces Docker Desktop)
-cask "ngrok"
-cask "tableplus"
 
 # ============================================================================
 # Casks: Utilities
@@ -249,18 +236,11 @@ cask "rectangle"    # Window snapping
 cask "nikitabobko/tap/aerospace"  # Tiling window manager
 cask "karabiner-elements" # Keyboard remapping
 cask "appcleaner"   # Clean uninstalls
-cask "keka"         # Archive utility
-cask "mullvad-vpn"  # VPN
 cask "utm"          # Virtual machines
 cask "qlmarkdown"   # Quick Look markdown preview
 cask "crystalfetch" # macOS installer downloader
-brew "tailscale"        # Tailscale CLI
-cask "tailscale-app"  # Mesh VPN
-cask "raycast"          # Spotlight replacement/launcher
 cask "obsidian"         # notes/PKM
-cask "background-music" # per-app volume control / audio routing
 cask "slack"
-cask "zoom"
 brew "asciiquarium"     # terminal aquarium; lean-provisioning lock/screensaver experience
 
 # === Optional: Proprietary Apps ===
@@ -272,7 +252,6 @@ brew "asciiquarium"     # terminal aquarium; lean-provisioning lock/screensaver 
 # Casks: Claude
 # ============================================================================
 
-cask "claude"
 cask "claude-code@latest"  # bleeding-edge channel; "claude-code" is stable
 brew "ccusage"             # Claude Code usage/cost tracker
 
