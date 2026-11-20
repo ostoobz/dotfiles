@@ -47,7 +47,7 @@ setup_gh_aliases() {
   fi
 
   info "Setting up gh aliases"
-  gh alias set co 'pr checkout' 2>/dev/null
+  gh alias set --clobber co 'pr checkout' >/dev/null
   success "Configured gh aliases"
 }
 
