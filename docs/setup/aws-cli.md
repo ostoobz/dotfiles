@@ -3,8 +3,9 @@
 You end up with named profiles (`dev`, `qa`, `uat`, `prod`) that share one sign-in, no access keys
 on disk, and no default profile.
 
-The config format below is AWS's documented one for IAM Identity Center. Signing in with it has not
-yet been run on a machine provisioned from these dotfiles.
+The config format below is AWS's documented one for IAM Identity Center, and the CLI has been
+confirmed to read profiles written this way. Signing in with it has not yet been run on a machine
+provisioned from these dotfiles.
 
 ## You need
 
@@ -19,7 +20,7 @@ yet been run on a machine provisioned from these dotfiles.
 
    ```ini
    [sso-session work]
-   sso_start_url = https://<your-portal>.awsapps.com/start
+   sso_start_url = https://<your-portal>.awsapps.com/start   # stop at /start; drop any #/… the browser adds
    sso_region = <sso-region>
    sso_registration_scopes = sso:account:access
 

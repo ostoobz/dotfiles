@@ -3,9 +3,6 @@
 You end up with `jira issue view <KEY>` working from any shell, with the API token in the keychain
 and nothing exported.
 
-Storing the token this way has been confirmed. `jira init` completing against a live site has not
-yet been confirmed.
-
 ## You need
 
 - `jira-cli` (installed by the Brewfile).
@@ -22,8 +19,8 @@ yet been confirmed.
    keychain-set jira-cli you@example.com
    ```
 
-   It prints the number of characters stored. If that is exactly 128, suspect the value was cut
-   off before it reached the command (see [secrets.md](secrets.md)).
+   It prints the number of characters stored. An Atlassian API token is 192 characters; a
+   different count means the value was cut off or mis-pasted (see [secrets.md](secrets.md)).
 
 4. Configure the tool:
 
@@ -31,7 +28,8 @@ yet been confirmed.
    jira init
    ```
 
-   Installation type `Cloud`, your site address, the same email.
+   Installation type `Cloud`, your site address, the same email, then pick your default project
+   from the list it fetches. Reaching that list means the token was accepted.
 
 ## Check it worked
 

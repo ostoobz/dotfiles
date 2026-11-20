@@ -57,6 +57,8 @@ When the conversation is about architecture, design tradeoffs, or non-trivial te
   | `choosing-the-implementation-language` | a language or runtime is about to be chosen for a new tool |
   | `python-cli-starter` | scaffolding a new Python CLI |
 
+- **When `~/.stoobz/kb/` does not exist on this machine, the kb is not provisioned here.** Don't search for it, ask about it, or stop over it. Apply each entry from its name and trigger line above, skip writing kb entries, and say once per session that the kb was unavailable.
+
 ## Boundaries
 
 A reference inside a shipped artifact (skill markdown, code, README, committed doc, anything that can be cloned or shared) must **resolve for any reader who fetches it** — public URL, in-repo relative path, named convention (ADR title, RFC, named pattern), or public package coordinate. Operator-private filesystem paths fail this test: the artifact rots the moment someone else opens it. Convention: **portable-references** in the operator's kb.

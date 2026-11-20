@@ -7,8 +7,8 @@ in and storing credentials.
 | Guide | Sets up | Status |
 | --- | --- | --- |
 | [secrets.md](secrets.md) | Where credentials live, `keychain-set`, Claude Code's API key, 1Password CLI | Keychain and API key steps run and confirmed. 1Password CLI section not yet run. |
-| [aws-cli.md](aws-cli.md) | AWS CLI with single sign-on profiles | Config format is AWS's documented one. Sign-in not yet run with it. |
-| [jira-cli.md](jira-cli.md) | `jira-cli` with a keychain-held token | Token storage confirmed. `jira init` not yet confirmed. |
+| [aws-cli.md](aws-cli.md) | AWS CLI with single sign-on profiles | Config written and read back by the CLI. Sign-in not yet run with it. |
+| [jira-cli.md](jira-cli.md) | `jira-cli` with a keychain-held token | Run end to end and confirmed. |
 
 Not written yet, to be added after a first real run: Auth0 CLI, Datadog CLI.
 
