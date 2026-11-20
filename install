@@ -38,7 +38,7 @@ STEPS="
 # Steps that need sudo. --only <step> consults this list; anything not named
 # here runs without ask_for_sudo, so user-space steps don't stall for a
 # password. Full install always asks because step 01 needs it.
-SUDO_STEPS="xcode macos"
+SUDO_STEPS="xcode shell macos"
 
 step_number() { echo "$1" | cut -d: -f1; }
 step_name()   { echo "$1" | cut -d: -f2; }
