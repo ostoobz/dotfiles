@@ -7,7 +7,7 @@ machine, deterministic idempotent steps after that.
 ## Install
 
 ```shell
-curl -sL https://raw.githubusercontent.com/jstoobz/dotfiles/main/bootstrap.sh | bash
+curl -sL https://raw.githubusercontent.com/ostoobz/dotfiles/main/bootstrap.sh | bash
 ```
 
 The bootstrap script is POSIX `sh` — it runs before anything is cloned, so it

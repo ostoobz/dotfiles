@@ -3,8 +3,8 @@
 # Dotfiles Bootstrap — curl-friendly entrypoint
 #
 # Usage:
-#   curl -sL https://raw.githubusercontent.com/jstoobz/dotfiles/main/bootstrap.sh | bash
-#   curl -sL https://raw.githubusercontent.com/jstoobz/dotfiles/main/bootstrap.sh | bash -s -- --dry-run
+#   curl -sL https://raw.githubusercontent.com/ostoobz/dotfiles/main/bootstrap.sh | bash
+#   curl -sL https://raw.githubusercontent.com/ostoobz/dotfiles/main/bootstrap.sh | bash -s -- --dry-run
 # ============================================================================
 
 set -e
@@ -30,7 +30,11 @@ printf '%s' "$RESET"
 # ── Sudo keepalive ──────────────────────────────────────────────────────────
 
 sudo -v
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+while true; do
+  sudo -n true
+  sleep 60
+  kill -0 "$$" || exit
+done 2>/dev/null &
 
 # ── Xcode CLT (provides git) ───────────────────────────────────────────────
 
@@ -50,6 +54,6 @@ fi
 # ── Clone and install ───────────────────────────────────────────────────────
 
 DOTFILES="${HOME}/.dotfiles"
-git clone https://github.com/jstoobz/dotfiles.git "$DOTFILES" 2>/dev/null \
+git clone https://github.com/ostoobz/dotfiles.git "$DOTFILES" 2>/dev/null \
   || (cd "$DOTFILES" && git pull)
 exec "$DOTFILES/install" --from-step 2 "$@"
