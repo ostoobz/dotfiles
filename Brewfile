@@ -91,6 +91,7 @@ brew "vim"
 brew "neovim"
 brew "tmux"
 brew "mise"         # version manager (no shims)
+brew "uv"           # Python runner; session-kit's sk CLI runs on it
 brew "mas"          # Mac App Store CLI
 brew "powershell"   # cross-platform pwsh, paired with windows-provisioning/windows-batch-scripting skills
 brew "dotnet"       # powershell's runtime dependency
