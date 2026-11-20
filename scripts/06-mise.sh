@@ -11,8 +11,6 @@ DOTFILES_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 configure_mise() {
   info "Configuring mise"
 
-  eval "$(mise activate sh)"
-
   MISE_CONFIG="${DOTFILES_ROOT}/config/mise/config.toml"
 
   if [ ! -f "$MISE_CONFIG" ]; then
@@ -27,11 +25,14 @@ configure_mise() {
   mise install
   success "Installed runtimes"
 
-  if command_exists mix; then
+  # `mise exec` rather than activation: `mise activate` has no `sh` target, and
+  # in a non-interactive script it would not put the runtimes on PATH anyway, so
+  # on a fresh machine `mix` was never found and this block was skipped.
+  if mise which mix >/dev/null 2>&1; then
     info "Installing hex, rebar, and phx_new"
-    mix local.hex --if-missing --force
-    mix local.rebar --if-missing --force
-    mix archive.install hex phx_new --force
+    mise exec -- mix local.hex --if-missing --force
+    mise exec -- mix local.rebar --if-missing --force
+    mise exec -- mix archive.install hex phx_new --force
     success "Installed Elixir tooling"
   else
     info "Elixir not declared in config.toml, skipping hex/rebar/phx_new"
