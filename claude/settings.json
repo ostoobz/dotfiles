@@ -68,6 +68,7 @@
     ]
   },
   "model": "claude-fable-5[1m]",
+  "apiKeyHelper": "security find-generic-password -s anthropic-api-key -w",
   "disableClaudeAiConnectors": true,
   "hooks": {
     "PreToolUse": [
