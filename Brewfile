@@ -271,6 +271,7 @@ cask "1password"
 cask "1password-cli"          # op: secret references, op run, Touch ID unlock via the app
 cask "aws-vpn-client"
 cask "session-manager-plugin" # required by `aws ecs execute-command` / `aws ssm start-session`
+brew "jira-cli"               # token read from keychain service "jira-cli", never exported
 cask "datagrip"
 cask "microsoft-outlook"
 cask "microsoft-teams"
