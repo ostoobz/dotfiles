@@ -7,7 +7,7 @@ in and storing credentials.
 | Guide | Sets up | Status |
 | --- | --- | --- |
 | [secrets.md](secrets.md) | Where credentials live, `keychain-set`, Claude Code's API key, 1Password CLI | Keychain and API key steps run and confirmed. 1Password CLI section not yet run. |
-| [aws-cli.md](aws-cli.md) | AWS CLI with single sign-on profiles | Config written and read back by the CLI. Sign-in not yet run with it. |
+| [aws-cli.md](aws-cli.md) | AWS CLI with single sign-on profiles | Run end to end and confirmed: one sign-in, every profile resolving to its account and role. |
 | [jira-cli.md](jira-cli.md) | `jira-cli` with a keychain-held token | Run end to end and confirmed. |
 | [dotnet.md](dotnet.md) | Several .NET SDKs side by side through mise | Run and confirmed with SDK 8 and 9. Workloads not covered. |
 
