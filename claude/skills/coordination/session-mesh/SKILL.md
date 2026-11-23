@@ -42,6 +42,11 @@ obligations apply on top of it and are not restated in every prompt:
 5. **Persist your report** to `session-summaries/<same-number-and-slug>-summary.md` before the session
    closes, in your own words, including item 4. A finding that exists only in a closed terminal gets
    rediscovered the expensive way.
+6. **Deliver what the prompt's `Ship:` line says, and no further.** `commit` means commit on the
+   branch and stop. `push` adds pushing it. `pr → <base>` adds opening the pull request against that
+   base. With no `Ship:` line, commit and stop, and list the commands that would finish the job.
+   Whatever the line says, anything the repository reserves for a person — sign-offs, attestations,
+   approvals — stays exactly as you found it.
 
 **RS only:** you write nothing. Read, reason, attack. Assume the conclusion you were given is wrong and
 find where. The people who produced it were competent and had less context than you have now.
@@ -133,7 +138,12 @@ Target: IS | RS | digest
 Model:  <model> · Effort: <level>
 Repos:  <what must be in scope>
 Reads:  <artifacts it must load first>
+Ship:   commit | push | pr → <base branch>      (IS only; default commit)
 ```
+
+`Ship:` is the delivery the OS authorises for this one prompt. Pushing a branch and opening a pull
+request are visible to other people, so they are granted per prompt and never assumed. Setting it
+here removes the round trip where the session stops and hands back the commands to run.
 
 Every prompt ends with two things:
 
@@ -271,7 +281,7 @@ have to be true for it to hold.
 1. Is this prompt-shaped, or am I about to implement? If implementing, stop and write the prompt.
 2. Does the prompt carry what other sessions learned? That is the only reason the OS writes it.
 3. Scope fence named, with _stop and report rather than widen_.
-4. Model and effort in the header.
+4. Model and effort in the header, and `Ship:` if the session should push or open a pull request.
 5. Ends with "tell me what is wrong in this brief."
 6. Persisted before firing.
 7. On return: digest if large, persist the summary, write one paragraph into the relay, update the
