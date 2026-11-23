@@ -1,6 +1,6 @@
 ---
 name: session-mesh
-description: Run a long multi-session project as an orchestrator (OS) coordinating implementation (IS) and reviewer (RS) sessions. Use when work spans days, repos, or more sessions than one context can hold. Triggers on "orchestrator", "OS session", "IS session", "RS session", "session mesh", "dispatch a prompt", or picking up a workstream with an ORCHESTRATOR_RELAY / ANCHOR file. Defines the three roles, the digest rule, prompt persistence, running lists, and the gate before anything irreversible.
+description: Run a long multi-session project as an orchestrator (OS) coordinating implementation (IS) and reviewer (RS) sessions. Use when work spans days, repos, or more sessions than one context can hold. Triggers on "orchestrator", "OS session", "IS session", "RS session", "session mesh", "dispatch a prompt", or picking up a workstream with an ORCHESTRATOR_RELAY / ANCHOR file. Defines the three roles, the digest rule, prompt persistence, running lists, tester runbooks written on approval, and the gate before anything irreversible.
 ---
 
 # Session mesh
@@ -41,7 +41,9 @@ obligations apply on top of it and are not restated in every prompt:
    you find nothing, say so explicitly.
 5. **Persist your report** to `session-summaries/<same-number-and-slug>-summary.md` before the session
    closes, in your own words, including item 4. A finding that exists only in a closed terminal gets
-   rediscovered the expensive way.
+   rediscovered the expensive way. When the change will be tested in a deployed environment, the
+   report also carries **verification notes**: where to exercise it, what must be true beforehand,
+   what a correct result looks like, and which of those you actually ran.
 6. **Deliver what the prompt's `Ship:` line says, and no further.** `commit` means commit on the
    branch and stop. `push` adds pushing it. `pr → <base>` adds opening the pull request against that
    base. With no `Ship:` line, commit and stop, and list the commands that would finish the job.
@@ -116,6 +118,7 @@ Run digests in parallel. Fan out on independent dimensions, not on document orde
 <workstream>/prompts/NNNb-slug.md             second, and so on
 <workstream>/prompts/session-summaries/NNN-slug-summary.md
 <workstream>/prompts/README.md                naming convention + live state table
+<workstream>/runbooks/<ticket>-qa-runbook.md  what the tester needs, one per ticket (§3)
 ```
 
 **The number is the thread; the letter is the iteration.** Never renumber. A low number does not mean
@@ -202,6 +205,38 @@ expensive way, usually by hitting the same wall.
 project, not what the session did. The summary is the record; the paragraph is what the next OS reads
 first.
 
+### Runbooks
+
+**When the OS approves a branch, it writes that ticket's runbook**: `runbooks/<ticket>-qa-runbook.md`,
+for the person who will test the change in a deployed environment.
+
+The OS writes it, not the IS. Only the OS knows what else is in flight — which other tickets share
+the environment, the data or the feature flags, and what has to be tested in what order. And a
+runbook written before approval describes code that is still changing.
+
+The OS does not invent the steps. They come from the summary's verification notes (§0, item 5), and
+the OS adds what only it holds. This is §2's mechanism rule applied to a document someone else will
+act on: **a step nobody ran is marked as not run.**
+
+Keep it short enough to follow with the application open:
+
+- **Status line first**, dated: what state the change is in and where it is deployed (branch,
+  commits, environment).
+- **What changed**, in the tester's terms: the behaviour before, the behaviour now, and what is
+  deliberately unchanged.
+- **Before you start**: flags, data, accounts, roles, and anything another ticket must land first.
+- **Steps**, each with its expected result.
+- **What you'll also see (expected, not bugs)**: behaviour that looks wrong and is not, with the
+  ticket it belongs to.
+- **If something fails**: exactly what to record.
+
+Cover the known paths and say that is what it covers. The point is to hand the tester what is already
+understood, so their time goes to the cases nobody thought to write down.
+
+When two runbooks share a precondition, one states it and the other points at it. When a follow-up
+changes behaviour, update the runbook in place and move the status line: unlike a relay, it is a
+working document for someone outside the mesh, and they should only ever have one current copy.
+
 ## 4. The two context files, and why they are two
 
 This split is the thing that survives contact with a long project.
@@ -264,7 +299,8 @@ lacked finds things nobody else can.
 ## 7. Roles
 
 **OS.** Holds cross-domain context. Writes every prompt. Runs read-only investigation, queries and
-proofs directly. Maintains the anchor, the relay and the lists. **Does not write feature code.** If it
+proofs directly. Maintains the anchor, the relay, the lists and the runbooks. **Does not write feature
+code.** If it
 starts implementing, the context it exists to hold is being spent on something delegable.
 
 **IS.** One scoped thing, one repo where possible. Implements, verifies, reports. Stages only files it
@@ -286,6 +322,7 @@ have to be true for it to hold.
 6. Persisted before firing.
 7. On return: digest if large, persist the summary, write one paragraph into the relay, update the
    lists.
+8. On approving a branch: write or update its runbook.
 
 ## 9. Failure modes this exists to prevent
 
@@ -299,3 +336,4 @@ have to be true for it to hold.
 | The same wrong belief returns            | No correction ledger                         | §4                                          |
 | Something irreversible ships broken      | No adversarial pass                          | §6                                          |
 | A prompt only makes sense to its author  | Not self-contained                           | §2                                          |
+| Testers re-derive what the team knew     | No runbook, or one written before approval   | §3, runbooks                                |
