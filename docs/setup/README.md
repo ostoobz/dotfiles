@@ -9,6 +9,7 @@ in and storing credentials.
 | [secrets.md](secrets.md) | Where credentials live, `keychain-set`, Claude Code's API key, 1Password CLI | Keychain and API key steps run and confirmed. 1Password CLI section not yet run. |
 | [aws-cli.md](aws-cli.md) | AWS CLI with single sign-on profiles | Run end to end and confirmed: one sign-in, every profile resolving to its account and role. |
 | [jira-cli.md](jira-cli.md) | `jira-cli` with a keychain-held token | Run end to end and confirmed. |
+| [hex.md](hex.md) | Private Hex packages for Elixir projects | Run and confirmed on Hex 2.7. Keyless build-server sign-in not yet run. |
 | [dotnet.md](dotnet.md) | Several .NET SDKs side by side through mise | Run and confirmed with SDK 8 and 9. Workloads not covered. |
 
 Not written yet, to be added after a first real run: Auth0 CLI, Datadog CLI.
