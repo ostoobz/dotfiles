@@ -4,8 +4,8 @@ font-size = 14
 theme = Dracula+
 command = /bin/zsh --login
 
-window-padding-x = 8
-window-padding-y = 8
+window-padding-x = 4
+window-padding-y = 4
 macos-titlebar-style = tabs
 
 copy-on-select = clipboard
